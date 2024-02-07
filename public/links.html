@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="links"></div>
+    <script>
+        const ids = ["00a407","00a082","9212","9224","9629","9074","9222","9827","9534","9963","9112"]
+        const myDiv = document.getElementById("links")
+
+        ids.forEach(printLinks)
+
+        function printLinks(id){
+            myDiv.innerHTML += "<p> <b>ID:</b>" + id + "<br>"
+            
+            myDiv.innerHTML += "<a href=\"index.html?id=" + id + "\">link</a></p>"
+        }
+    
+    </script>
+</body>
+
+</html>
