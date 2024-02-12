@@ -16,25 +16,16 @@ CREATE TABLE data(
 );
 
 
-/*Query 1 - Grabs all data points with type 21*/
-SELECT * FROM data WHERE type1 = '21';
 
-/*#Query 2: Grabs all data points from a specific date*/ 
-SELECT * 
-FROM data 
-WHERE datum LIKE '10/10/2022%';
-
-/*Query 3: Grabs all data points for a certain Serial number*/
-Select * 
-FROM data
-WHERE SN = '009963'
-
-/*Query 4: Grabs all data points for a certain serial number for a given time*/
+/* Query 1: Returns all data points for a certain serial number for a given time */
 SELECT * 
 FROM data
-WHERE SN = '000156' AND datum LIKE '10/10/2022%';
+WHERE SN = '<SN>' AND datum = '<Datum>';
 
-/*Query 5: Grabs all data points for certain serial number, type and time*/
-SELECT * 
+
+/* Query 2: Returns the 5 most frequent occuring serial numbers i.e. most measured appliance */
+SELECT sn, COUNT(*) 
 FROM data 
-WHERE SN = '000156' AND datum LIKE '10/10/2022%';
+GROUP BY sn 
+ORDER BY COUNT(*) DESC 
+LIMIT 5;
