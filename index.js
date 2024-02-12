@@ -11,10 +11,7 @@ const app = express()
 
 app.use(express.static('public'))
 
-const httpServer= http.createServer(app)
-httpServer.listen(8080)
-
-const query = "SELECT * FROM data WHERE SN = '009222' AND datum LIKE '07/12/2022%'";
+const query = "select * from data where sn = '009074' AND datum = '08/12/2022' AND tid LIKE '01:15%';";
 pool.query(query, (err, res) => {
     if (err) {
         console.error('Error executing query', err.stack);
@@ -22,3 +19,6 @@ pool.query(query, (err, res) => {
         console.log(res.rows);
     }
 });
+console.log("Listening on port 8080:");
+const httpServer= http.createServer(app);
+httpServer.listen(8080);
