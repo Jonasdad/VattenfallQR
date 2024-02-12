@@ -17,24 +17,31 @@ const getMostFrequentSN = async (pool) => {
         LIMIT 1
     `;
     const res = await pool.query(query);
-    return res.rows[0];
+    return res.rows;
 };
 
-const getkwhBySnAndDate = async (pool, date, sn) => {
-    const query = `SELECT kwh from data where date = $1, and sn = $2;`;
-    const res = await pool.query(query, [date, sn]);
-    return res.rows[0];
+const getkwhBySnAndDate = async (res, sn, date) => {
+    console.log("req: " + req);
+    const query = `SELECT kwh from data where datum = $1 AND sn = $2 limit 5;`;
+    res = await pool.query(query, date, sn);
+    return res.rows;
+};
+const getkwhAndDateTimeBySn = async (res, sn) => {
+    const query = `SELECT datum, tid, kwh from data where sn = $1 limit 5;`;
+    res = await pool.query(query, sn);
+    return res.rows;
 };
 
-const getDataFromSNAndDate = async (pool, date, sn) => {
+const getDataFromSNAndDate = async (res, date, sn) => {
     const query = `SELECT * FROM data WHERE date = $1 AND sn = $2`;
-    const res = await pool.query(query, [date, sn]);
-    return res.rows[0];
+    res = await pool.query(query, [date, sn]);
+    return res.rows;
 }
 
 module.exports = {
     getDatumBySN,
     getMostFrequentSN,
     getkwhBySnAndDate,
-    getDataFromSNAndDate
+    getDataFromSNAndDate,
+    getkwhAndDateTimeBySn
 };
