@@ -1,8 +1,10 @@
 const express = require('express')
 const http = require('http')
-const {parseCSV} = require('./data')
+//const {parseCSV} = require('./data')
 
-parseCSV();
+//Connect via lan at "<IpV4:8080>"
+
+//parseCSV();
 
 const app = express()
 
