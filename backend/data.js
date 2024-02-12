@@ -12,13 +12,13 @@ const pool = new Pool({
   port: 5432,
 });
 const parseCSV = async() => {
-  dataPath = './data'
+  dataPath = '../data'
   const results = [];
   let i = 0;
+  console.log("Creating DB...");
   fs.readdir(dataPath, (err, files) =>{
     for (const file of files) {
       const resultsInner = [];
-      console.log('Creating DB...');
       const filePath = path.join(dataPath, file)
  
       fs.createReadStream(filePath)
@@ -39,16 +39,16 @@ const parseCSV = async() => {
           resultsInner.push(row)
 
           // Insert into the database
-            i++;
-            console.log(i);
+          if(row.Type1 == 21){
             const query = 'INSERT INTO data (datum, sn, type1, kwh) VALUES ($1, $2, $3, $4)';
             try {
-             await pool.query(query, [row.datum, row.SN, row.Type1, row.DATA]);
+               await pool.query(query, [row.datum, row.SN, row.Type1, row.DATA]);
               // console.log('Insert successful');
             } catch (err) {
               console.error('Error executing query', err.stack);
               console.log(filePath)
             }
+          }
           
           })
           .on('end', () => {
@@ -59,6 +59,7 @@ const parseCSV = async() => {
 }
 
 module.exports = {
-    parseCSV
+  parseCSV
 }
 parseCSV();
+console.log("DB Finished...");
