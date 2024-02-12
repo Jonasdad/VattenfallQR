@@ -1,21 +1,14 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const path = require('path')
-const { Pool } = require('pg');
+const pool = require("./dbConfig"); // Postgresql credentials and setup
 
-// PostgreSQL connection setup
-const pool = new Pool({
-  user: 'vattenfall',
-  host: 'localhost',
-  database: 'vattenfall',
-  password: '6321',
-  port: 5432,
-});
+
+// Reads CSV files and constructs database with wanted parameters
 const parseCSV = async() => {
   dataPath = '../data'
   const results = [];
   let i = 0;
-  console.log("Creating DB...");
   fs.readdir(dataPath, (err, files) =>{
     for (const file of files) {
       const resultsInner = [];
@@ -39,10 +32,10 @@ const parseCSV = async() => {
           resultsInner.push(row)
 
           // Insert into the database
-          if(row.Type1 == 21){
-            const query = 'INSERT INTO data (datum, sn, type1, kwh) VALUES ($1, $2, $3, $4)';
+          if(row.Type1 == 21){ // Only get type1 = 21
+            const query = 'INSERT INTO data (datum, tid, sn, type1, kwh) VALUES ($1, $2, $3, $4, $5)';
             try {
-               await pool.query(query, [row.datum, row.SN, row.Type1, row.DATA]);
+               await pool.query(query, [row.datum.split(' ')[0], row.datum.split(' ')[1], row.SN, row.Type1, row.DATA[0]]);
               // console.log('Insert successful');
             } catch (err) {
               console.error('Error executing query', err.stack);
@@ -62,4 +55,3 @@ module.exports = {
   parseCSV
 }
 parseCSV();
-console.log("DB Finished...");
