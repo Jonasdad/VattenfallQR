@@ -1,0 +1,26 @@
+:root {
+    --bg: #E9ECEE;
+    --text-color: #4E4B48;
+    --link-color: #598DFA;
+}
+
+html, body{
+    height: 100%;
+    background-color: var(--bg);
+}
+
+.logo-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#banner-img{
+    width: 60%;
+}
+
+.appliance{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
