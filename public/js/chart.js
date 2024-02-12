@@ -1,5 +1,5 @@
 const ctx = document.getElementById("area-chart");
-
+const { getDatumBySN, getMostFrequentSN, getkwhBySnAndDate, getDataFromSNAndDate } = require('../backend/queries.js');
 const data = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
