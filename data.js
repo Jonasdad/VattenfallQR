@@ -1,7 +1,7 @@
 const csv = require('csv-parser')
 const fs = require('fs')
 const path = require('path')
-const pool = require("./dbConfig"); // Postgresql credentials and setup
+const pool = require("./db/dbConfig"); // Postgresql credentials and setup
 
 
 // Reads CSV files and constructs database with wanted parameters
