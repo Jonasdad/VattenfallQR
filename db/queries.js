@@ -10,12 +10,7 @@ const getDatumBySN = async (pool, sn) => {
 
 const getMostFrequentSN = async (pool) => {
     const query = `
-        SELECT sn 
-        FROM data 
-        GROUP BY sn 
-        ORDER BY COUNT(*) DESC 
-        LIMIT 1
-    `;
+        SELECT sn FROM data GROUP BY sn ORDER BY COUNT(*) DESC LIMIT 5;`;
     const res = await pool.query(query);
     return res.rows;
 };
@@ -27,7 +22,7 @@ const getkwhBySnAndDate = async (res, sn, date) => {
     return res.rows;
 };
 const getkwhAndDateTimeBySn = async (res, sn) => {
-    const query = `SELECT datum, tid, kwh from data where sn = $1 limit 5;`;
+    const query = `SELECT datum, tid, kwh from data where sn = $1;`;
     res = await pool.query(query, sn);
     return res.rows;
 };
