@@ -6,7 +6,7 @@ const pool = require("./db/dbConfig"); // Postgresql credentials and setup
 
 // Reads CSV files and constructs database with wanted parameters
 const parseCSV = async() => {
-  dataPath = '../data'
+  dataPath = './data'
   const results = [];
   let i = 0;
   fs.readdir(dataPath, (err, files) =>{
