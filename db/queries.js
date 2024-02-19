@@ -22,7 +22,7 @@ const getkwhBySnAndDate = async (res, sn, date) => {
     return res.rows;
 };
 const getkwhAndDateTimeBySn = async (res, sn) => {
-    const query = `SELECT datum, tid, kwh from data where sn = $1;`;
+    const query = `SELECT datum, tid, wh, volt, ampere from data where sn = $1 ORDER BY datum, tid;`;
     res = await pool.query(query, sn);
     return res.rows;
 };

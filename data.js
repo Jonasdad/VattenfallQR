@@ -33,9 +33,9 @@ const parseCSV = async() => {
 
           // Insert into the database
           if(row.Type1 == 21){ // Only get type1 = 21
-            const query = 'INSERT INTO data (datum, tid, sn, type1, kwh) VALUES ($1, $2, $3, $4, $5)';
+            const query = 'INSERT INTO data (datum, tid, sn, type1, wh, volt, ampere) VALUES ($1, $2, $3, $4, $5, $6, $7)';
             try {
-               await pool.query(query, [row.datum.split(' ')[0], row.datum.split(' ')[1], row.SN, row.Type1, row.DATA[0]]);
+               await pool.query(query, [row.datum.split(' ')[0].split("/").reverse().join("-"), row.datum.split(' ')[1], row.SN, row.Type1, data.DATA, row.DATA[0], row.DATA[1]]);
               // console.log('Insert successful');
             } catch (err) {
               console.error('Error executing query', err.stack);

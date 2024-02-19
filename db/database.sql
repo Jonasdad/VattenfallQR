@@ -12,7 +12,9 @@ CREATE TABLE data(
     tid varchar(100),
     SN varchar (10),
     Type1 varchar (10),
-    kwh varchar(250)
+    wh float,
+    volt float,
+    ampere float
 );
 
 
