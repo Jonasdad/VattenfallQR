@@ -1,6 +1,9 @@
 const ctx = document.getElementById("area-chart");
 let chart;
 
+// import { Chart } from 'chart.js';
+// import 'chartjs-adapter-moment';
+
 /* const data = {    
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [{
@@ -20,9 +23,8 @@ function updateChart(date, data){
 
     data.map(entry => {
         if(entry.datum == date){
-            console.log(entry.datum.split('-')[0], entry.datum.split('-')[1], entry.datum.split('-')[2], entry.tid.split(':')[0], entry.tid.split(':')[1])
             xVals.push({
-                "x": new Date(entry.datum.split('-')[0], entry.datum.split('-')[1], entry.datum.split('-')[2], entry.tid.split(':')[0], entry.tid.split(':')[1]),
+                "x": new Date(entry.datum.split('-')[0], entry.datum.split('-')[1] - 1, entry.datum.split('-')[2], entry.tid.split(':')[0], entry.tid.split(':')[1]),
                 "y": entry.volt * entry.ampere
             })
         }
@@ -34,8 +36,11 @@ function updateChart(date, data){
     // 2023-01-11
     dateArr = date.split('-')
     for(let i = 0; i <= 24; i++) {
-        labels.push(new Date(dateArr[0], dateArr[1], dateArr[2], i))
+        labels.push(new Date(dateArr[0], dateArr[1] - 1, dateArr[2], i))
     }
+
+    // console.log(labels)
+    // console.log(xVals)
 
     const chartData = {
         labels: labels,
@@ -57,9 +62,6 @@ function updateChart(date, data){
                 }
             },
             scales :{
-                // y: {
-                //     beginAtZero: true,
-                // },
                 xAxis: {
                     type: 'time',
                     
@@ -71,13 +73,10 @@ function updateChart(date, data){
                         minUnit: 'minute', // smallest time format
     
                         displayFormats: {
-                            minute: "HH:mm",
-                            hour: "dd/MM HH:mm",
-                            day: "dd/MM",
-                            week: "dd/MM",
-                            month: "MMMM yyyy",
-                            quarter: 'MMMM yyyy',
-                            year: "yyyy",
+                            millisecond: 'HH:mm:ss.SSS',
+                            second: 'HH:mm:ss',
+                            minute: 'HH:mm',
+                            hour: 'HH'
                         }
                     }
                 }
