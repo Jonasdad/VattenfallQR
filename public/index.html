@@ -7,45 +7,50 @@
     <title>VattenfallQR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="logo-container mt-3">
-        <img id="banner-img" src="/img/vattenfall-banner.png">
+    <div class="logo-container d-flex justify-content-center align-items-center mt-3">
+        <img class="w-75 p-2" src="/img/vattenfall-banner.png">
     </div>
 
-    <div class="appliance mt-3">
-        <p class="fw-bold">[Appliance Name]</p>
+    <div class="appliance d-flex justify-content-center align-items-center mt-3">
+        <p id="appliance-name" class="fw-bold">[Appliance Name]</p>
     </div>
 
     <div class="container">
         <div class="info-container border rounded text-dark bg-light m-3 mt-0">
             <div class="dropdown d-flex justify-content-end">
-                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="drop1">I'm a dropdown!</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" onclick="changeTime(this)">Option1</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeTime(this)">Option2</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeTime(this)">Option3</a></li>
-                </ul>
+                <select id="time-select" class="form-select form-select-sm bg-transparent border-0 w-auto" onchange="changeTime(this)" aria-expanded="false">
+                    <option value="24" selected>Past 24 hours</option>
+                    <option value="week">Past week</option>
+                    <option value="month">Past 30 days</option>
+                </select>
             </div>
             <div class="info d-flex justify-content-around text-center">
                 <div class="info-left info-card p-3">
-                    <p>I'm on the left!</p>
+                    <p>Energy<br>Consumption</p>
                     <hr>
-                    <p id="info-wh" class="fw-bold">I'm bellow left</p>
+                    <p  id="info-wh" class="fw-bold">--.-- kWh</p>
                 </div>
                 <div class="info-right info-card p-3">
-                    <p>I'm on the right!</p>
+                    <p>Estimated<br>Cost</p>
                     <hr>
-                    <p id="info-kr" class="fw-bold">I'm lost</p>
+                    <p id="info-kr" class="fw-bold">--.-- kr</p>
                 </div>
             </div>
         </div>
-        <div class="chart border rounded text-dark bg-light m-3">
-            <input type="date" id="date-picker" class="form-control" onchange="changeDate(this)" value="2023-01-10"/>
+        <div class="info-container border rounded text-dark bg-light m-3">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-end" >
+                    <span class="fw-bold ps-1" style="font-size: 11px;">
+                        Power (W)
+                    </span>
+                </div>
+                <input type="date" id="date-picker" class="d-inline form-control bg-transparent border-0 w-auto" onchange="changeDate(this)" value="2023-01-10"/>
+            </div>
             <div>
-                <canvas id="area-chart"></canvas>
+                <canvas id="area-chart" height="190"></canvas>
             </div>
         </div>
     </div>
@@ -54,30 +59,54 @@
     <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" title="https://jetpunk.com">JetPunk homepage</a> <!-- Don't worry about it... -->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.1.1/dist/chart.umd.min.js"></script>
-    <script src="./js/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@^3"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@^2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@^1"></script>
+    <script src="./js/chart.js"></script>
+    <script src="./js/info.js"></script>
 
     <script async>
         let data;
 
+        // should be in db
+        const devices = {
+            "00a407": "Home office",
+            "00a082": "Fridge & Router", // not sure
+            "009212": "Kitchen fan & light",
+            "009224": "Microwave oven",
+            "009629": "Google assistant",
+            "009074": "Phone chargers mixed",
+            "009222": "Freezer",
+            "009827": "Central vacuum cleaner",
+            "009534": "TV 65\"/Speaker/chormecast/blueray",
+            "009963": "Coffee maker",
+            "009112": "Dishwasher"
+        }
+
         async function loadData(){
             const urlParams = new URLSearchParams(window.location.search);
-            const response = await fetch('/api/'+urlParams.get('id'));
+            const id = urlParams.get('id')
+            dname = devices[id]
+
+            document.getElementById('appliance-name').textContent = dname
+
+            const response = await fetch('/api/'+id);
             data = await response.json();
             
             document.getElementById('date-picker').value = data[data.length-1].datum
+            document.getElementById('date-picker').max = data[data.length-1].datum
+            document.getElementById('date-picker').min = data[0].datum
+
 
             updateChart(data[data.length-1].datum, data);
+            updateInfo(document.getElementById('time-select').value, data);
 
         }
         loadData();
 
         function changeTime(item) {
-            document.getElementById("drop1").innerText = item.innerText
+            updateInfo(item.value, data)
         }
         function changeDate(item){
             updateChart(item.value, data)
