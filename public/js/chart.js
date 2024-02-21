@@ -48,7 +48,8 @@ function updateChart(date, data){
             label: 'Watt',
             data: xVals,
             borderWidth: 1,
-            fill: 'start'
+            fill: 'start',
+            borderColor: 'rgba(26, 114, 182, 0.8)',
         }]
     }
 
@@ -56,6 +57,14 @@ function updateChart(date, data){
         type: 'line',
         data: chartData,
         options: {
+            interaction: {
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                }
+            },
             elements: {
                 point: {
                     radius: 0
@@ -63,9 +72,22 @@ function updateChart(date, data){
             },
             scales :{
                 xAxis: {
+                    grid:{
+                        display: false,
+                    },
                     type: 'time',
-                    
+                    title: {
+                        color: '#4E4B48',
+                        display: true,
+                        text: "Time (h)",
+                        font: {
+                            size: 11,
+                            weight: 'bold',
+                            lineHeight: 1,
+                        }
+                    },
                     ticks: {
+                        color: '#4E4B48',
                         source: 'labels', // get ticks from given labels
                     },
     
@@ -78,6 +100,12 @@ function updateChart(date, data){
                             minute: 'HH:mm',
                             hour: 'HH'
                         }
+                    }
+                },
+                yAxis: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#4E4B48'
                     }
                 }
             }

@@ -2,6 +2,11 @@
     --bg: #E9ECEE;
     --text-color: #4E4B48;
     --link-color: #598DFA;
+    --small-text: 13px;
+}
+
+h1,h2,h3,h4,h5,p,span, .form-control, .dropdown-toggle, .dropdown-item{
+    color: var(--text-color);
 }
 
 html, body{
@@ -9,18 +14,10 @@ html, body{
     background-color: var(--bg);
 }
 
-.logo-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#date-picker, #drop1, #time-select{
+    font-size: var(--small-text);
 }
 
-#banner-img{
-    width: 60%;
-}
-
-.appliance{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#date-picker:focus, #time-select:focus{
+    box-shadow: none;
 }
