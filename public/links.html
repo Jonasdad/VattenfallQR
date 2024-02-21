@@ -9,15 +9,29 @@
 <body>
     <div id="links"></div>
     <script>
-        const ids = ["00a407","00a082","009212","009224","009629","009074","009222","009827","009534","009963","009112"]
+        const ids = [
+            ["00a407", "Home office"],
+            ["00a082", ""],
+            ["009212", "Kitchen fan+light"],
+            ["009224", "Microwave oven"],
+            ["009629", "Google Assistant + IT"],
+            ["009074", "Phone chargers"],
+            ["009222", "Freezer"],
+            ["009827", "Central vaccume cleaner"],
+            ["009534", "TV/Speaker/etc."],
+            ["009963", "Coffe maker"],
+            ["009112", "Kitchen Dishwasher+fridge"]
+        ]
         const myDiv = document.getElementById("links")
 
         ids.forEach(printLinks)
 
         function printLinks(id){
-            myDiv.innerHTML += "<p> <b>ID:</b>" + id + "<br>"
+            myDiv.innerHTML += "<h3>" + id[1] + "</h3>"
             
-            myDiv.innerHTML += "<a href=\"../?id=" + id + "\">link</a></p>"
+            myDiv.innerHTML += "<p> <b>ID:</b>" + id[0] + "<br>"
+            
+            myDiv.innerHTML += "<a href=\"../?id=" + id[0] + "\">link</a></p>"
         }
     
     </script>
