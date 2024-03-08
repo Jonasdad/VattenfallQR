@@ -54,7 +54,7 @@ def main():
 
 
     for deviceID in deviceIDs:
-        address = f"http://{ip}:{port}?deviceID={deviceID}"
+        address = f"http://{ip}:{port}?id={deviceID}"
 
         print(f"Making QR Code for IP: {address}")
         img = makeQR(address)
